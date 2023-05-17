@@ -1,5 +1,56 @@
 ## PR review docs
 
+### Aproach and general rules
+
+#### Pull/Merge Requests
+
+Main branches like master and develop should be protected and code changes should enter these branches only via pull/merge requests.
+
+If developer works on a feature branch for more than a few hours, it is good to share the intermediate results with the rest of the team. To do this, create a pull/merge request without assigning it to anyone. Instead, mention people in the description or a comment and open the PR as a Draft PR. This indicates that the pull/merge request is not ready to be merged yet, but feedback is welcome.
+
+Team members can comment on the pull/merge request in general or on specific lines with line comments. The pull/merge request serves as a code review tool, and no separate code review tools should be needed. If the review reveals shortcomings, anyone can commit and push a fix. Usually, the person to do this is the creator of the pull/merge request. The diff in the pull/merge request automatically updates when new commits are pushed to the branch.
+
+When you are ready for your feature branch to be merged, assign the pull/merge request to the person who knows most about the codebase you are changing. Also, mention any other people from whom you would like feedback. After the assigned person feels comfortable with the result, they can merge the branch. If the assigned person does not feel comfortable, they can request more changes or close the pull/merge request without merging.
+
+After you merge a feature branch, you should remove it from the source control software. Removing finished branches ensures that the list of branches shows only work in progress.
+
+#### Conducting a Code Review
+
+For a productive and effective code review, follow below best practice advices.
+
+##### Know What to Look for
+
+Know what to look for in code reviews: structure, style, logic, performance. readability (and maintainability), etc.
+
+Reviewing code with certain questions in mind can help you focus on the right things. For instance, you might evaluate code to answer:
+
+- Do I understand what the code does?
+- Does the code function as I expect it to?
+- Does this code fulfil regulatory requirements?
+
+##### Review Fewer than 400 Lines of Code at a Time
+
+A study revealed that developers should review no more than 200 to 400 lines of code (LOC) at a time.
+
+In practice, a review of 200-400 LOC over 60 to 90 minutes should yield 70-90% defect discovery.
+
+##### Inspection rates should under 500 LOC per hour
+
+Research shows a significant drop in defect density at rates faster than 500 LOC per hour. Code reviews in reasonable quantity, at a slower pace for a limited amount of time results in the most effective code review.
+
+##### Create Positive Review Culture
+Try to be constructive in your feedback, rather than critical. You can do this by asking questions, rather than making statements.
+
+___
+### Code quality rules
+
+A list of questions to ask ourselves when we are reviewing code. These can also be used when coding, and when doing a self-review before opening a PR.
+
+---
+- can the code be simpler
+  - often when we write code it's hard to take a step back and see that we made something more complex than it needs to be. But reviewing code (even our own at the end of a task) it's easier to spot. This can be something small (like nesting multiple ternary operators when a `switch` could have worked) or something bigger (trying to solve multiple use cases with one component, making it overly complicated)
+  - when we can't understand why something is written in a certain way, it might be an indicator that it's more complicated than it needs to be
+___
 - should this code be in a component or can it be placed outside?
   - any function that doesn't depend on component state can (and should) be moved outside the component
 ```typescript
@@ -133,10 +184,6 @@ const OurTabs: React.FC = () => {
 - is the component structure good
   - do we have too many / too few components? Sometimes there will be a huge component file with code and logic that could be separated into 2+ components (a parent component with children, a wrapper, completely separate components etc.)
   - other times, we can even define too many components. Single-line components are fine as long as we use them in 3+ places. But if we use them in one, we should just leave that in the main component
----
-- can the code be simpler
-  - often when we write code it's hard to take a step back and see that we made something more complex than it needs to be. But reviewing code (even our own at the end of a task) it's easier to spot. This can be something small (like nesting multiple ternary operators when a `switch` could have worked) or something bigger (trying to solve multiple use cases with one component, making it overly complicated)
-  - when we can't understand why something is written in a certain way, it might be an indicator that it's more complicated thatn it needs to be
 ---
 - are there unecessary `console.logs()` or multiple empty lines?
 - are there unused files added (for instance, image assets that ended up not being used)
